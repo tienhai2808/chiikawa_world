@@ -3,10 +3,10 @@
  * Tamagotchi HUD, Day/Night Cycle, Mini-Games, Gacha Machine, Photo Booth.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap');
 
 :root {
-  --pixel-font: 'Tiny5', monospace, sans-serif;
+  --pixel-font: 'Chakra Petch', monospace, sans-serif;
   --bg-sky: #ffecf2;
   --pixel-border-color: #2b201e;
   --pixel-card-bg: #fffdfa;
@@ -23,7 +23,7 @@
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-  font-family: 'Tiny5', monospace, sans-serif !important;
+  font-family: 'Chakra Petch', monospace, sans-serif !important;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
@@ -37,18 +37,15 @@ html, body {
   padding: 0;
   overflow: hidden;
   touch-action: manipulation;
-  font-family: 'Tiny5', monospace, sans-serif !important;
+  font-family: 'Chakra Petch', monospace, sans-serif !important;
 }
 
 body, button, input, textarea, select, span, p, div, h1, h2, h3, h4, h5, h6 {
-  font-family: 'Tiny5', monospace, sans-serif !important;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: unset;
-  text-rendering: pixelated;
+  font-family: 'Chakra Petch', monospace, sans-serif !important;
 }
 
 body {
-  font-family: 'Tiny5', monospace, sans-serif !important;
+  font-family: 'Chakra Petch', monospace, sans-serif !important;
   color: var(--pixel-border-color);
   background-color: #fee9e7;
   background-image: linear-gradient(180deg, #ffd3e2 0%, #fff0d4 60%, #c8f5d0 100%);
@@ -1115,16 +1112,65 @@ body.weather-sakura .b-flag {
   background: #ffffff;
   border: 2px solid var(--pixel-border-color);
   box-shadow: 2px 2px 0 #000000;
-  padding: 2px 6px;
+  padding: 3px 8px;
   font-family: var(--pixel-font) !important;
-  font-size: 0.8rem;
-  letter-spacing: -0.5px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   white-space: nowrap;
+  color: #1e1b4b; /* Không bao giờ kế thừa màu trắng từ body */
+  transition: all 0.3s ease;
 }
 
-#char-chiikawa .pixel-name-tag { color: #e11d48; }
-#char-hachiware .pixel-name-tag { color: #0284c7; }
-#char-usagi .pixel-name-tag { color: #b45309; }
+/* 1. Mặc định (Trời Nắng / Gió Hoa): Màu sắc rực rỡ đặc trưng */
+.tag-chiikawa {
+  color: #be123c !important; /* Đỏ dâu Chiikawa */
+}
+.tag-hachiware {
+  color: #0284c7 !important; /* Xanh dương Hachiware */
+}
+.tag-usagi {
+  color: #b45309 !important; /* Vàng hổ phách Usagi */
+}
+
+/* 2. Chế độ Mưa (weather-rain): Nền navy đậm + Chữ màu pastel tươi sáng */
+body.weather-rain .pixel-name-tag {
+  background: #1e293b !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 2px 2px 0 #000000 !important;
+}
+body.weather-rain .tag-chiikawa {
+  color: #fda4af !important; /* Hồng pastel sáng rõ nét */
+}
+body.weather-rain .tag-hachiware {
+  color: #7dd3fc !important; /* Xanh băng tuyết sáng rõ nét */
+}
+body.weather-rain .tag-usagi {
+  color: #fde047 !important; /* Vàng rực rỡ sáng rõ nét */
+}
+
+/* 3. Chế độ Ban Đêm (weather-night & night-theme): Nền đen thẫm + Chữ dạ quang Neon */
+body.weather-night .pixel-name-tag,
+body.night-theme .pixel-name-tag {
+  background: #0f172a !important;
+  border-color: #818cf8 !important;
+  box-shadow: 2px 2px 0 #000000, 0 0 6px rgba(129, 140, 248, 0.4) !important;
+}
+body.weather-night .tag-chiikawa,
+body.night-theme .tag-chiikawa {
+  color: #ff758f !important; /* Neon hồng dạ quang */
+  text-shadow: 0 0 6px rgba(255, 117, 143, 0.6);
+}
+body.weather-night .tag-hachiware,
+body.night-theme .tag-hachiware {
+  color: #67e8f9 !important; /* Neon cyan dạ quang */
+  text-shadow: 0 0 6px rgba(103, 232, 249, 0.6);
+}
+body.weather-night .tag-usagi,
+body.night-theme .tag-usagi {
+  color: #fef08a !important; /* Neon vàng sao dạ quang */
+  text-shadow: 0 0 6px rgba(254, 240, 138, 0.6);
+}
 
 /* Bong bóng lời thoại định vị an toàn chuẩn tâm từng nhân vật */
 .speech-bubble {

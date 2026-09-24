@@ -84,4 +84,4 @@ Mở file [`config.js`](file:///home/nonroot/workspace/chiikawa/config.js) để
 
 ## 🚀 Cách Mở & Trải Nghiệm
 
-Chỉ cần mở file [`index.html`](file:///home/nonroot/workspace/chiikawa/index.html) bằng bất kỳ trình duyệt nào. Toàn bộ giao diện sử dụng chuẩn 1 font **Pixel Art Tiny5** đồng nhất 100% hỗ trợ đầy đủ tiếng Việt không lỗi font!
+Chỉ cần mở file [`index.html`](file:///home/nonroot/workspace/chiikawa/index.html) bằng bất kỳ trình duyệt nào. Toàn bộ giao diện sử dụng chuẩn 1 font **Retro Gaming Chakra Petch** đồng nhất 100%, góc cạnh đậm chất game retro cổ điển, siêu dễ đọc và hỗ trợ đầy đủ tiếng Việt không bao giờ lỗi font!

@@ -545,11 +545,11 @@ class ChiikawaGames {
 
     // Chữ kỷ niệm
     ctx.fillStyle = "#2b201e";
-    ctx.font = "bold 20px Tiny5, monospace";
+    ctx.font = "bold 20px 'Chakra Petch', monospace";
     ctx.textAlign = "center";
     ctx.fillText("Chiikawa • Hachiware • Usagi", 200, 380);
 
-    ctx.font = "16px Tiny5, monospace";
+    ctx.font = "16px 'Chakra Petch', monospace";
     ctx.fillStyle = "#0284c7";
     ctx.fillText("Kỷ niệm ngày hội thảo nguyên ✨", 200, 415);
 

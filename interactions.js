@@ -188,25 +188,45 @@ function initLoveCounter() {
   const coupleNamesEl = document.getElementById("couple-names");
 
   const config = window.CHIIKAWA_CONFIG || {};
-  const couple = config.couple || {};
+  const player = config.player || config.couple || {};
 
   if (coupleNamesEl) {
     coupleNamesEl.textContent = config.appName || "Thế Giới Chiikawa";
   }
 
-  const startDate = new Date(couple.startDate || "2024-01-01");
+  // Khởi tạo ngày bắt đầu theo giờ địa phương (tránh lệch 7 tiếng múi giờ UTC/GMT)
+  const dateStr = player.startDate || "2024-01-01";
+  const [startYear, startMonth, startDay] = dateStr.split("-").map(Number);
+  const startDate = new Date(startYear, (startMonth || 1) - 1, startDay || 1, 0, 0, 0);
 
   function update() {
     const now = new Date();
-    const diffTime = Math.abs(now - startDate);
 
+    // Số ngày khám phá tính theo mốc 00:00 ngày bắt đầu
+    const diffTime = Math.max(0, now.getTime() - startDate.getTime());
     const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diffTime / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diffTime / (1000 * 60)) % 60);
-    const seconds = Math.floor((diffTime / 1000) % 60);
+
+    // Đồng hồ thời gian thực chuẩn múi giờ Việt Nam (ICT - UTC+7)
+    let currentTimeStr;
+    try {
+      const timeFormatter = new Intl.DateTimeFormat("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+      currentTimeStr = timeFormatter.format(now);
+    } catch (e) {
+      // Fallback
+      const hh = String(now.getHours()).padStart(2, "0");
+      const mm = String(now.getMinutes()).padStart(2, "0");
+      const ss = String(now.getSeconds()).padStart(2, "0");
+      currentTimeStr = `${hh}:${mm}:${ss}`;
+    }
 
     if (counterEl) counterEl.textContent = `${days}`;
-    if (detailEl) detailEl.textContent = `${hours}H ${minutes}M ${seconds}S`;
+    if (detailEl) detailEl.textContent = `${currentTimeStr}`;
   }
 
   update();
