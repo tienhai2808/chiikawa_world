@@ -1,0 +1,2419 @@
+/**
+ * Chiikawa Retro Pixel Art World Theme (Expanded Edition)
+ * Tamagotchi HUD, Day/Night Cycle, Mini-Games, Gacha Machine, Photo Booth.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
+
+:root {
+  --pixel-font: 'Tiny5', monospace, sans-serif;
+  --bg-sky: #ffecf2;
+  --pixel-border-color: #2b201e;
+  --pixel-card-bg: #fffdfa;
+  --pixel-card-shadow: #e0d0c5;
+  --pixel-pink: #ff6584;
+  --pixel-blue: #4fa8e0;
+  --pixel-yellow: #fcd34d;
+  --pixel-green: #52b788;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  font-family: 'Tiny5', monospace, sans-serif !important;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+  font-family: 'Tiny5', monospace, sans-serif !important;
+}
+
+body, button, input, textarea, select, span, p, div, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Tiny5', monospace, sans-serif !important;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  text-rendering: pixelated;
+}
+
+body {
+  font-family: 'Tiny5', monospace, sans-serif !important;
+  color: var(--pixel-border-color);
+  background-color: #fee9e7;
+  background-image: linear-gradient(180deg, #ffd3e2 0%, #fff0d4 60%, #c8f5d0 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: background-image 0.5s ease;
+}
+
+/* =========================================
+   HỆ THỐNG THỜI TIẾT 4 MÙA CHÂN THỰC (WEATHER THEMES)
+========================================= */
+
+/* 1. Mặc định: Trời Nắng Ấm Dã Ngoại (Sunny) */
+body, body.weather-sunny {
+  background-color: #70c4ff;
+  background-image: linear-gradient(180deg, #70c4ff 0%, #b8eaff 40%, #fef3c7 75%, #c8f5d0 100%);
+  color: var(--pixel-border-color);
+  transition: background-image 0.6s ease, color 0.4s ease;
+}
+
+/* 2. Trời Mưa Rào Gió Mát (Rain) */
+body.weather-rain {
+  background-color: #475569;
+  background-image: linear-gradient(180deg, #475569 0%, #64748b 45%, #94a3b8 75%, #406d64 100%);
+  color: #f8fafc;
+}
+body.weather-rain .pixel-ground {
+  background: linear-gradient(180deg, #406d64 0%, #2d5a52 40%, #1c3b35 100%);
+  border-top-color: #1e293b;
+}
+body.weather-rain .picnic-mat {
+  filter: brightness(0.88);
+}
+body.weather-rain .fluffy-cloud-svg .cloud-body-path {
+  fill: #94a3b8;
+}
+body.weather-rain .fluffy-cloud-svg .cloud-shadow-path {
+  fill: #64748b;
+}
+body.weather-rain .pixel-rainbow {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.9);
+}
+body.weather-rain .sun-element {
+  display: none !important;
+}
+body.weather-rain .moon-element {
+  display: none !important;
+}
+body.weather-rain .pixel-celestial::after {
+  content: '🌧️';
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 3. Gió Thoảng Hoa Bay (Sakura Breeze) */
+body.weather-sakura {
+  background-color: #fbcfe8;
+  background-image: linear-gradient(180deg, #fbcfe8 0%, #fed7aa 45%, #fef08a 75%, #bbf7d0 100%);
+  color: #831843;
+}
+body.weather-sakura .pixel-ground {
+  background: linear-gradient(180deg, #86efac 0%, #4ade80 40%, #22c55e 100%);
+}
+body.weather-sakura .fluffy-cloud-svg .cloud-body-path {
+  fill: #fff1f2;
+}
+body.weather-sakura .fluffy-cloud-svg .cloud-shadow-path {
+  fill: #fecdd3;
+}
+
+/* 4. Đêm Sao Lung Linh & Đom Đóm (Night) */
+body.weather-night, body.night-theme {
+  background-color: #090d16;
+  background-image: linear-gradient(180deg, #090d16 0%, #1e1b4b 55%, #1e3a5f 80%, #064e3b 100%);
+  color: #f1f5f9;
+}
+body.weather-night .pixel-ground,
+body.night-theme .pixel-ground {
+  background: linear-gradient(180deg, #14532d 0%, #064e3b 40%, #022c22 100%);
+  border-top-color: #0f172a;
+}
+body.weather-night .fluffy-cloud-svg .cloud-body-path,
+body.night-theme .fluffy-cloud-svg .cloud-body-path {
+  fill: #334155;
+}
+body.weather-night .fluffy-cloud-svg .cloud-shadow-path,
+body.night-theme .fluffy-cloud-svg .cloud-shadow-path {
+  fill: #1e293b;
+}
+body.weather-night .fluffy-cloud-svg .cloud-eye,
+body.weather-night .fluffy-cloud-svg .cloud-eye-closed,
+body.weather-night .fluffy-cloud-svg .cloud-mouth,
+body.night-theme .fluffy-cloud-svg .cloud-eye,
+body.night-theme .fluffy-cloud-svg .cloud-eye-closed,
+body.night-theme .fluffy-cloud-svg .cloud-mouth {
+  fill: #94a3b8;
+  stroke: #94a3b8;
+}
+body.weather-night .pixel-rainbow,
+body.night-theme .pixel-rainbow {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.9);
+}
+body.weather-night .sun-element,
+body.night-theme .sun-element {
+  display: none !important;
+}
+body.weather-night .moon-element,
+body.night-theme .moon-element {
+  display: flex !important;
+}
+
+body.night-theme .hud-brand-box,
+body.night-theme .coin-display,
+body.night-theme .btn-icon,
+body.night-theme .hud-meters-row,
+body.night-theme .console-dock-container,
+body.night-theme .dock-tab,
+body.night-theme .console-btn,
+body.night-theme .inventory-bar,
+body.night-theme .pixel-toast,
+body.weather-night .hud-brand-box,
+body.weather-night .coin-display,
+body.weather-night .btn-icon,
+body.weather-night .hud-meters-row,
+body.weather-night .console-dock-container,
+body.weather-night .dock-tab,
+body.weather-night .console-btn,
+body.weather-night .inventory-bar,
+body.weather-night .pixel-toast {
+  background: #1e293b;
+  color: #f8fafc;
+  border-color: #475569;
+  box-shadow: 2px 2px 0 #000000;
+}
+body.night-theme .couple-names,
+body.weather-night .couple-names {
+  color: #f472b6;
+}
+body.night-theme .hud-time-detail,
+body.night-theme .hud-day-counter,
+body.weather-night .hud-time-detail,
+body.weather-night .hud-day-counter {
+  color: #94a3b8;
+}
+body.night-theme .stat-bar-track,
+body.weather-night .stat-bar-track {
+  background: #334155;
+  border-color: #475569;
+}
+body.night-theme .dock-tab.active,
+body.weather-night .dock-tab.active {
+  background: #334155;
+  color: #f472b6;
+  border-color: #f472b6;
+  box-shadow: 0 -2px 0 #f472b6;
+}
+
+/* =========================================
+   CANVAS HẠT PIXEL
+========================================= */
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 14;
+}
+
+/* =========================================
+   1. DÂY CỜ DÃ NGOẠI PASTEL TAM GIÁC PIXEL
+========================================= */
+.camp-bunting {
+  position: absolute;
+  top: 66px;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 25;
+  overflow: hidden;
+  height: 28px;
+}
+.bunting-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #2b201e;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+.bunting-flags {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 0 4px;
+}
+.b-flag {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 17px solid #fca5a5;
+  filter: drop-shadow(0 2px 0 rgba(43, 32, 30, 0.4));
+  transform-origin: top center;
+  animation: buntingSway 2.8s ease-in-out infinite alternate;
+}
+.b-flag:nth-child(2n) { animation-duration: 2.3s; animation-delay: -0.4s; }
+.b-flag:nth-child(3n) { animation-duration: 3.1s; animation-delay: -0.9s; }
+.b-flag:nth-child(4n) { animation-duration: 2.6s; animation-delay: -1.3s; }
+
+.flag-pink { border-top-color: #f472b6; }
+.flag-yellow { border-top-color: #facc15; }
+.flag-blue { border-top-color: #38bdf8; }
+.flag-mint { border-top-color: #4ade80; }
+.flag-peach { border-top-color: #fb923c; }
+.flag-lavender { border-top-color: #c084fc; }
+
+@keyframes buntingSway {
+  0% { transform: rotate(-6deg); }
+  100% { transform: rotate(6deg); }
+}
+body.weather-rain .b-flag,
+body.weather-sakura .b-flag {
+  animation-duration: 1.4s;
+}
+
+/* =========================================
+   2. CẦU VỒNG PIXEL 8-BIT
+========================================= */
+.pixel-rainbow {
+  position: absolute;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%) scale(1);
+  width: clamp(230px, 75vw, 360px);
+  height: 90px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.88;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  filter: drop-shadow(0 0 6px rgba(254, 240, 138, 0.35));
+}
+.rainbow-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* =========================================
+   3. BẦU TRỜI MÂY PIXEL FLUFFY VỚI MẶT CƯỜI
+========================================= */
+.pixel-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
+
+/* Mặt trời / Trăng tương tác */
+.pixel-celestial {
+  position: absolute;
+  top: 70px;
+  left: 14px;
+  width: 54px;
+  height: 54px;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+.pixel-celestial:active {
+  transform: scale(0.92) rotate(8deg);
+}
+.sun-element {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Vòng 8 tia nắng nhọn xoay tròn rực rỡ */
+.sun-rays-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: spinSunRays 16s linear infinite;
+  transform-origin: center center;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.45));
+}
+@keyframes spinSunRays {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Thân mặt trời hình TRÒN xoe 100% với hiệu ứng tỏa sáng & má hồng */
+.sun-face-circle {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 35% 35%, #fffbeb 0%, #fef08a 35%, #facc15 70%, #f59e0b 100%);
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.7), inset -2px -2px 0 #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  animation: sunGiggle 3s ease-in-out infinite alternate;
+}
+@keyframes sunGiggle {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.sun-eye-dot {
+  position: absolute;
+  top: 9px;
+  width: 3.5px;
+  height: 3.5px;
+  background: #2b201e;
+  border-radius: 50%;
+}
+.sun-eye-dot.eye-left { left: 8px; }
+.sun-eye-dot.eye-right { right: 8px; }
+
+.sun-mouth-smile {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 4px;
+  border-bottom: 2.5px solid #2b201e;
+  border-radius: 0 0 8px 8px;
+}
+
+.sun-blush {
+  position: absolute;
+  top: 13px;
+  width: 5px;
+  height: 3px;
+  background: #fb7185;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+.sun-blush.blush-left { left: 5px; }
+.sun-blush.blush-right { right: 5px; }
+
+.moon-element {
+  display: none;
+  position: relative;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+}
+.moon-core {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  box-shadow: 7px 7px 0 0 #fef08a;
+  filter: drop-shadow(0 0 12px #fde047);
+}
+.moon-star {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  color: #ffffff;
+  font-size: 0.75rem;
+  animation: starTwinkle 1.5s infinite alternate;
+}
+@keyframes starTwinkle {
+  0% { opacity: 0.3; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Các làn trôi mây pixel */
+.cloud-track {
+  position: absolute;
+  width: auto;
+  pointer-events: none;
+  left: 0;
+}
+.track-1 {
+  top: 76px;
+  animation: moveCloudTrack 42s linear infinite;
+}
+.track-2 {
+  top: 136px;
+  animation: moveCloudTrack 58s linear infinite -20s;
+}
+.track-3 {
+  top: 194px;
+  animation: moveCloudTrack 35s linear infinite -10s;
+}
+
+@keyframes moveCloudTrack {
+  0% { transform: translateX(-190px); }
+  100% { transform: translateX(calc(100vw + 190px)); }
+}
+
+.cloud-bob {
+  display: inline-block;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: cloudBobbing 3.8s ease-in-out infinite alternate;
+  transition: transform 0.12s steps(2);
+}
+.track-2 .cloud-bob {
+  animation-duration: 4.5s;
+  animation-delay: -1.5s;
+}
+.track-3 .cloud-bob {
+  animation-duration: 3.2s;
+  animation-delay: -0.8s;
+}
+
+@keyframes cloudBobbing {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-7px); }
+}
+
+.cloud-bob:active {
+  transform: scale(1.18, 0.82) !important;
+}
+
+.fluffy-cloud-svg {
+  display: block;
+  filter: drop-shadow(2px 3px 0 rgba(43, 32, 30, 0.18));
+}
+.fluffy-cloud-svg path,
+.fluffy-cloud-svg rect {
+  transition: fill 0.4s ease, stroke 0.4s ease;
+}
+
+/* =========================================
+   4. BÓNG BAY THƯ BÁO & NHẶT XU TƯƠNG TÁC
+========================================= */
+.lucky-balloon-track {
+  position: absolute;
+  top: 220px;
+  left: -70px;
+  pointer-events: none;
+  z-index: 12;
+  animation: balloonFlight 25s linear infinite;
+}
+@keyframes balloonFlight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 150px)); }
+}
+
+.lucky-balloon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: balloonBob 2.6s ease-in-out infinite alternate;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+@keyframes balloonBob {
+  0% { transform: translateY(0) rotate(-4deg); }
+  100% { transform: translateY(-12px) rotate(4deg); }
+}
+.lucky-balloon:active {
+  transform: scale(0.92);
+}
+
+.balloon-tag {
+  background: #ffffff;
+  border: 2px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  color: #e11d48;
+  font-family: var(--pixel-font) !important;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  animation: tagPulse 1.2s infinite alternate ease-in-out;
+}
+@keyframes tagPulse {
+  0% { transform: scale(0.95); }
+  100% { transform: scale(1.08); }
+}
+
+.balloon-svg {
+  display: block;
+  filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.22));
+}
+
+.lucky-balloon.popped {
+  transform: scale(0) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =========================================
+   5. DÃY ĐỒI XANH XA XÔI & CỐI XAY GIÓ (ĐỘ SÂU CHIỀU DÀI)
+========================================= */
+.distant-hills {
+  position: fixed;
+  bottom: 140px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hills-back {
+  position: absolute;
+  bottom: 0;
+  left: -20px;
+  width: calc(100% + 40px);
+  height: 70px;
+  background: radial-gradient(circle at 50% 120%, #95d5b2 50%, #74c69d 85%);
+  border-top: 3px solid #52b788;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  opacity: 0.65;
+}
+
+.hills-mid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  background: radial-gradient(circle at 30% 100%, #74c69d 40%, #52b788 80%);
+  border-top: 3px solid #2d6a4f;
+  border-radius: 40% 60% 0 0 / 80% 90% 0 0;
+  opacity: 0.85;
+}
+
+/* Cối xay gió pixel tí hon ở góc đồi */
+.pixel-mini-windmill {
+  position: absolute;
+  top: -26px;
+  right: 28%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wm-body {
+  width: 10px;
+  height: 22px;
+  background: #fef08a;
+  border: 2px solid var(--pixel-border-color);
+  border-bottom: none;
+}
+.wm-blades {
+  position: absolute;
+  top: -6px;
+  width: 28px;
+  height: 28px;
+  animation: spinBlades 8s linear infinite;
+}
+.wm-blade {
+  position: absolute;
+  background: #ffffff;
+  border: 1.5px solid var(--pixel-border-color);
+}
+.b-h {
+  top: 12px;
+  left: 0;
+  width: 28px;
+  height: 4px;
+}
+.b-v {
+  top: 0;
+  left: 12px;
+  width: 4px;
+  height: 28px;
+}
+@keyframes spinBlades {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Các cây thông pixel nhỏ xíu trên đồi */
+.pixel-mini-tree {
+  position: absolute;
+  width: 10px;
+  height: 16px;
+  background: #2d6a4f;
+  border: 2px solid var(--pixel-border-color);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.tr-1 { top: -14px; left: 18%; }
+.tr-2 { top: -10px; left: 24%; }
+.tr-3 { top: -12px; right: 15%; }
+
+/* =========================================
+   PHONG CẢNH THIÊN NHIÊN (NHÀ NẤM, BIỂN BÁO)
+========================================= */
+.scenery-layer {
+  position: fixed;
+  bottom: 102px;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Ngôi nhà hạt dẻ của Chiikawa ở góc trái */
+.pixel-house {
+  position: absolute;
+  left: 28px;
+  bottom: 0;
+  width: 76px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pixel-house .roof {
+  width: 76px;
+  height: 38px;
+  background: #b45309;
+  border: 4px solid var(--pixel-border-color);
+  border-radius: 40px 40px 0 0;
+  box-shadow: inset -4px -4px 0 #78350f;
+}
+
+.pixel-house .walls {
+  width: 62px;
+  height: 42px;
+  background: #fef3c7;
+  border: 4px solid var(--pixel-border-color);
+  border-top: none;
+  position: relative;
+}
+
+.pixel-house .door {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 18px;
+  height: 26px;
+  background: #d97706;
+  border: 3px solid var(--pixel-border-color);
+  border-bottom: none;
+}
+
+.pixel-house .window {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 14px;
+  height: 14px;
+  background: #60a5fa;
+  border: 2px solid var(--pixel-border-color);
+}
+
+/* Biển chỉ dẫn các khu ở bên phải */
+.pixel-signpost {
+  position: absolute;
+  right: 40px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign-board {
+  background: #fef08a;
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+  color: #713f12;
+}
+
+.sign-pole {
+  width: 8px;
+  height: 45px;
+  background: #92400e;
+  border: 2px solid var(--pixel-border-color);
+  border-bottom: none;
+}
+
+/* =========================================
+   THẢM CỎ & THẢM DÃ NGOẠI
+========================================= */
+.pixel-ground {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(180deg, #74c69d 0%, #52b788 30%, #40916c 100%);
+  border-top: 5px solid #2b201e;
+  box-shadow: inset 0 5px 0 #95d5b2;
+}
+
+.pixel-ground-dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(#2d6a4f 15%, transparent 16%),
+    radial-gradient(#95d5b2 15%, transparent 16%);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  opacity: 0.35;
+}
+
+.picnic-mat {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 94%;
+  max-width: 520px;
+  height: 95px;
+  background: repeating-conic-gradient(#fee2e2 0% 25%, #ffffff 0% 50%) 50% / 20px 20px;
+  border: 3.5px solid var(--pixel-border-color);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+  opacity: 0.92;
+}
+
+.pixel-flower {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.fl-1 { top: 15px; left: 15%; background: #fb7185; }
+.fl-2 { top: 35px; left: 22%; background: #fde047; }
+.fl-3 { top: 18px; right: 18%; background: #a78bfa; }
+.fl-4 { top: 40px; right: 26%; background: #38bdf8; }
+
+/* =========================================
+   HEADER: MOBILE-FIRST RETRO TAMAGOTCHI HUD
+========================================= */
+.app-header {
+  position: relative;
+  z-index: 30;
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 6px 8px 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Hàng trên: Brand/Couple info + Coins + 3 Icon Buttons */
+.hud-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
+}
+
+.hud-brand-box {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 3px 6px;
+  min-width: 0;
+  flex: 1;
+  max-width: 200px;
+}
+
+.hud-heart {
+  font-size: 0.95rem;
+  animation: pulseHeart 1.5s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulseHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.hud-couple-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.couple-names {
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: #e11d48;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hud-day-counter {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.counter-number {
+  font-family: var(--pixel-font) !important;
+  font-size: 0.85rem;
+  color: #db2777;
+}
+
+.coin-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--pixel-font) !important;
+  font-size: 0.82rem;
+  color: #b45309;
+  background: #fef3c7;
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 4px 6px;
+  flex-shrink: 0;
+}
+
+.coin-icon {
+  font-size: 0.85rem;
+}
+
+.coin-val {
+  font-size: 0.72rem;
+}
+
+.top-controls {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.btn-icon {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 2.5px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  font-size: 0.86rem;
+  cursor: pointer;
+  outline: none;
+  border-radius: 0;
+  transition: transform 0.05s ease, background-color 0.1s;
+}
+
+.btn-icon:hover {
+  background: #fff1f2;
+}
+
+.btn-icon:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000000;
+}
+
+.btn-icon.playing {
+  background: #ecfdf5;
+  border-color: #059669;
+}
+
+/* Hàng dưới: 3 Thanh Chỉ số Tamagotchi & Đồng hồ chi tiết */
+.hud-meters-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
+  background: #ffffff;
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 3px 6px;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.stat-icon {
+  font-size: 0.78rem;
+}
+
+.stat-bar-track {
+  width: 44px;
+  height: 9px;
+  background: #e2e8f0;
+  border: 1.5px solid var(--pixel-border-color);
+  overflow: hidden;
+  position: relative;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.bar-red { background: #ef4444; }
+.bar-yellow { background: #f59e0b; }
+.bar-blue { background: #3b82f6; }
+
+.hud-time-detail {
+  font-family: var(--pixel-font) !important;
+  font-size: 0.68rem;
+  color: #64748b;
+  white-space: nowrap;
+  letter-spacing: -0.5px;
+  margin-left: auto;
+}
+
+/* Toast thông báo Pixel retro (Responsive, chống tràn màn hình) */
+.pixel-toast {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-15px);
+  width: min(92vw, 360px);
+  max-width: 360px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 3px 3px 0 #000000;
+  padding: 8px 12px;
+  font-family: var(--pixel-font) !important;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.45;
+  color: #be123c;
+  text-align: center;
+  z-index: 2000;
+  pointer-events: none;
+  opacity: 0;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pixel-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* =========================================
+   SÂN KHẤU CHÍNH: 3 SPRITE PIXEL ART
+========================================= */
+.main-stage {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 4px 6px 16px;
+}
+
+.characters-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.character-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 32%;
+}
+
+.pixel-sprite-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.pixel-sprite {
+  width: clamp(92px, 28vw, 150px);
+  height: clamp(92px, 28vw, 150px);
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  display: block;
+  transition: transform 0.1s steps(2);
+  filter: drop-shadow(0 4px 8px rgba(43, 32, 30, 0.15));
+}
+
+.pixel-sprite-wrapper:hover .pixel-sprite {
+  transform: translateY(-4px);
+}
+
+.pixel-sprite-wrapper:active .pixel-sprite {
+  transform: translateY(2px) scale(0.97);
+}
+
+.pixel-shadow {
+  width: clamp(60px, 18vw, 95px);
+  height: 10px;
+  background: #2b201e;
+  opacity: 0.22;
+  border-radius: 50%;
+  margin-top: -8px;
+}
+
+.pixel-name-tag {
+  margin-top: 6px;
+  background: #ffffff;
+  border: 2px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 2px 6px;
+  font-family: var(--pixel-font) !important;
+  font-size: 0.8rem;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+#char-chiikawa .pixel-name-tag { color: #e11d48; }
+#char-hachiware .pixel-name-tag { color: #0284c7; }
+#char-usagi .pixel-name-tag { color: #b45309; }
+
+/* Bong bóng lời thoại định vị an toàn chuẩn tâm từng nhân vật */
+.speech-bubble {
+  position: absolute;
+  top: -72px;
+  background: #ffffff;
+  border: 2.5px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 5px 8px;
+  font-family: var(--pixel-font) !important;
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #2b201e;
+  width: max-content;
+  max-width: 120px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 40;
+  white-space: normal;
+  word-break: break-word;
+}
+
+#bubble-chiikawa {
+  left: 0;
+  transform: translateY(6px);
+}
+#bubble-chiikawa::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 24px;
+  border-width: 7px 5px 0;
+  border-style: solid;
+  border-color: var(--pixel-border-color) transparent transparent;
+}
+#bubble-chiikawa.bubble-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#bubble-hachiware {
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+}
+#bubble-hachiware::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px 5px 0;
+  border-style: solid;
+  border-color: var(--pixel-border-color) transparent transparent;
+}
+#bubble-hachiware.bubble-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) !important;
+}
+
+#bubble-usagi {
+  right: 0;
+  left: auto;
+  transform: translateY(6px);
+}
+#bubble-usagi::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  right: 24px;
+  border-width: 7px 5px 0;
+  border-style: solid;
+  border-color: var(--pixel-border-color) transparent transparent;
+}
+#bubble-usagi.bubble-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pixel-hop {
+  animation: retroHop 0.35s steps(4);
+}
+
+@keyframes retroHop {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(var(--hop-height, -20px)); }
+  100% { transform: translateY(0); }
+}
+
+.pixel-shake {
+  animation: retroShake 0.4s steps(4);
+}
+
+@keyframes retroShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.usagi-tornado {
+  animation: tornadoSpin 0.25s infinite steps(4);
+}
+
+@keyframes tornadoSpin {
+  0% { transform: rotate(0deg) scale(1.3) translateY(-15px); }
+  25% { transform: rotate(90deg) scale(1.4) translateY(-25px); }
+  50% { transform: rotate(180deg) scale(1.3) translateY(-15px); }
+  75% { transform: rotate(270deg) scale(1.4) translateY(-30px); }
+  100% { transform: rotate(360deg) scale(1.3) translateY(-15px); }
+}
+
+/* =========================================
+   VŨ ĐIỆU PAJAMA PARTIES DANCE
+========================================= */
+.pixel-dancing {
+  animation: pajamaDance 0.5s infinite steps(2);
+}
+
+@keyframes pajamaDance {
+  0% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-18px) rotate(6deg); }
+  100% { transform: translateY(0) rotate(-6deg); }
+}
+
+/* =========================================
+   RETRO CONSOLE DOCK: TABS & ACTION CENTER
+========================================= */
+.console-dock-container {
+  position: relative;
+  width: 100%;
+  z-index: 35;
+  background: #ffffff;
+  border-top: 3.5px solid var(--pixel-border-color);
+  box-shadow: 0 -3px 0 rgba(0, 0, 0, 0.12);
+  padding: 5px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Thanh chọn Tab */
+.dock-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 5px;
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+}
+
+.dock-tab {
+  font-family: var(--pixel-font) !important;
+  font-size: 0.88rem;
+  font-weight: 800;
+  padding: 3px 6px;
+  background: #f1f5f9;
+  border: 2.5px solid var(--pixel-border-color);
+  border-bottom: none;
+  cursor: pointer;
+  color: #475569;
+  outline: none;
+  flex: 1;
+  text-align: center;
+  transition: all 0.1s steps(2);
+}
+
+.dock-tab:hover {
+  background: #fee2e2;
+  color: #e11d48;
+}
+
+.dock-tab.active {
+  background: #ffd3e2;
+  color: #be123c;
+  border-color: var(--pixel-border-color);
+  box-shadow: 0 -2px 0 #be123c;
+  transform: translateY(-1px);
+}
+
+/* Nội dung từng Tab */
+.dock-panel {
+  display: none;
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+}
+
+.dock-panel.active {
+  display: flex;
+}
+
+/* Hàng nút bấm Mini-Games & Hoạt Động */
+.games-nav-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.games-nav-row .console-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 6px 4px;
+  font-size: 0.85rem;
+}
+
+.activities-nav-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  width: 100%;
+}
+
+.activities-nav-row .console-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 4px 3px;
+  font-size: 0.82rem;
+  gap: 3px;
+}
+
+.console-btn {
+  font-family: var(--pixel-font) !important;
+  font-size: 0.88rem;
+  font-weight: 800;
+  background: #ffffff;
+  border: 2.5px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  outline: none;
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+  flex-shrink: 0;
+}
+
+.console-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #000000;
+  background: #fff8f8;
+}
+
+.console-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000000;
+}
+
+.console-btn .icon {
+  font-size: 1rem;
+}
+
+.btn-weeding { background: #dcfce7; }
+.btn-monster { background: #fef08a; }
+.btn-catcher { background: #fce7f3; }
+.btn-gacha { background: #fee2e2; }
+.btn-dance { background: #fef9c3; }
+.btn-camera { background: #e0f2fe; }
+.btn-cert { background: #ffedd5; }
+.btn-fortune { background: #f3e8ff; }
+.btn-chaos { background: #fef08a; }
+
+.inventory-hint {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #2b201e;
+  margin-bottom: 3px;
+}
+
+.inventory-bar {
+  background: #ffffff;
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 3px 3px 0 #000000;
+  padding: 4px 6px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  width: 100%;
+  align-items: center;
+}
+
+.inventory-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.food-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: grab;
+  padding: 3px 4px;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+  touch-action: none;
+}
+
+.food-item:hover {
+  background: #fff1f2;
+  border: 2px dashed var(--pixel-pink);
+  transform: translateY(-2px);
+}
+
+.food-item:active {
+  cursor: grabbing;
+}
+
+.food-img {
+  width: 34px;
+  height: 34px;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.food-name {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #443332;
+  white-space: nowrap;
+}
+
+.dragging-pixel-food {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 58px;
+  height: 58px;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.4));
+}
+
+/* =========================================
+   MODAL DIALOG POPUP CHUNG
+========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.modal-overlay.modal-open {
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+  background: #ffffff;
+  border: 6px solid var(--pixel-border-color);
+  box-shadow: 10px 10px 0 #000000;
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: #fee2e2;
+  border: 3px solid var(--pixel-border-color);
+  box-shadow: 2px 2px 0 #000000;
+  color: #e11d48;
+  font-family: var(--pixel-font) !important;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-title {
+  font-family: var(--pixel-font) !important;
+  font-size: 1.15rem;
+  color: #1e1b4b;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.btn-big {
+  width: 100%;
+  justify-content: center;
+  padding: 10px;
+  font-size: 1.1rem;
+  background: #fef08a;
+  border-width: 4px;
+}
+
+/* =========================================
+   1. MINI-GAME NHỔ CỎ (WEEDING)
+========================================= */
+.game-stats-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--pixel-font) !important;
+  font-size: 0.9rem;
+  background: #f1f5f9;
+  padding: 8px 12px;
+  border: 2px solid var(--pixel-border-color);
+  margin-bottom: 10px;
+}
+
+.highlight-val {
+  color: #e11d48;
+}
+
+.game-field-arena {
+  width: 100%;
+  height: 220px;
+  background: #86efac;
+  border: 4px solid var(--pixel-border-color);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 6px #4ade80;
+  cursor: crosshair;
+}
+
+.pixel-weed-item {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.weed-img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.game-result-box {
+  margin-top: 10px;
+  text-align: center;
+  background: #ecfdf5;
+  border: 3px solid #059669;
+  padding: 10px;
+}
+
+.game-result-box h3 {
+  font-family: var(--pixel-font) !important;
+  font-size: 1.05rem;
+  color: #059669;
+  margin-bottom: 4px;
+}
+
+/* =========================================
+   2. MINI-GAME THẢO PHẠT (MONSTER HUNT)
+========================================= */
+.monster-holes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 16px;
+  background: #fcd34d;
+  border: 4px solid var(--pixel-border-color);
+  box-shadow: inset 0 0 0 6px #f59e0b;
+}
+
+.monster-hole {
+  height: 80px;
+  background: #78350f;
+  border: 4px solid var(--pixel-border-color);
+  border-radius: 50% 50% 10px 10px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.monster-sprite-pop {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  animation: popUp 0.15s steps(2);
+}
+
+@keyframes popUp {
+  0% { transform: translateY(40px); }
+  100% { transform: translateY(0); }
+}
+
+/* =========================================
+   2B. MINI-GAME HỨNG BÁNH PUDDING (CATCHER)
+========================================= */
+.catcher-arena {
+  width: 100%;
+  height: 250px;
+  background: linear-gradient(180deg, #bae6fd 0%, #fed7aa 65%, #86efac 100%);
+  border: 4px solid var(--pixel-border-color);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 6px #7dd3fc;
+  cursor: ew-resize;
+}
+
+.catcher-basket {
+  position: absolute;
+  bottom: 8px;
+  left: 140px;
+  width: 50px;
+  height: 34px;
+  transition: transform 0.05s ease;
+  pointer-events: none;
+}
+
+.basket-img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.falling-treat {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.catcher-mobile-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  gap: 8px;
+}
+
+.btn-arrow {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  background: #f1f5f9;
+}
+
+.catcher-hint {
+  font-size: 0.72rem;
+  color: #64748b;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* =========================================
+   3. GACHA MACHINE
+========================================= */
+.gacha-machine-dispenser {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.gacha-capsule-display {
+  width: 90px;
+  height: 90px;
+  background: #f1f5f9;
+  border: 4px solid var(--pixel-border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.capsule-img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+}
+
+.gacha-spinning .capsule-img {
+  animation: capsuleSpin 0.25s infinite linear;
+}
+
+@keyframes capsuleSpin {
+  0% { transform: rotate(0deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1.1); }
+}
+
+.btn-gacha-spin {
+  background: #f43f5e;
+  color: #ffffff;
+  border-color: #9f1239;
+  font-size: 1rem;
+}
+
+.gacha-reward-card {
+  background: #fff1f2;
+  border: 4px solid #f43f5e;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 4px 4px 0 #be123c;
+}
+
+.gacha-pop {
+  animation: rewardPop 0.4s steps(4);
+}
+
+@keyframes rewardPop {
+  0% { transform: scale(0.6); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.gacha-rarity-badge {
+  font-family: var(--pixel-font) !important;
+  font-size: 0.9rem;
+  padding: 2px 8px;
+  color: #fff;
+  border: 2px solid #000;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.rarity-ur { background: #f59e0b; }
+.rarity-ssr { background: #ec4899; }
+.rarity-sr { background: #8b5cf6; }
+.rarity-r { background: #3b82f6; }
+
+.reward-title {
+  font-size: 1.15rem;
+  color: #9f1239;
+  margin-bottom: 6px;
+}
+
+.reward-desc {
+  font-size: 0.88rem;
+  color: #4c0519;
+}
+
+/* =========================================
+   4. POLAROID FRAME
+========================================= */
+.polaroid-frame {
+  background: #ffffff;
+  border: 4px solid var(--pixel-border-color);
+  box-shadow: 6px 6px 0 #000;
+  padding: 14px 14px 20px;
+  text-align: center;
+}
+
+.polaroid-photo-area {
+  background: #fed7aa;
+  border: 3px solid var(--pixel-border-color);
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.polaroid-trio {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.polaroid-char {
+  width: 90px;
+  height: 90px;
+  image-rendering: pixelated;
+}
+
+.polaroid-title {
+  font-family: var(--pixel-font) !important;
+  font-size: 1.05rem;
+  color: #e11d48;
+  margin-bottom: 4px;
+}
+
+.polaroid-date {
+  font-size: 0.85rem;
+  color: #4b5563;
+  font-weight: 700;
+}
+
+/* =========================================
+   5. BẰNG CHỨNG NHẬN 16-BIT RETRO RPG
+========================================= */
+.certificate-card {
+  background: #fffdf5;
+  border: 4px dashed #b45309;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.cert-emblem {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+
+.cert-title {
+  font-family: var(--pixel-font) !important;
+  font-size: 1.15rem;
+  color: #b45309;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.cert-subtitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #78350f;
+  margin-bottom: 12px;
+}
+
+.cert-girl-box {
+  background: #fef3c7;
+  border: 3px solid #b45309;
+  padding: 6px 12px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.cert-name {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #dc2626;
+}
+
+.cert-rank {
+  font-family: var(--pixel-font) !important;
+  font-size: 0.85rem;
+  color: #059669;
+  margin-bottom: 10px;
+}
+
+.cert-official-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 3px solid #e5e7eb;
+}
+
+.cert-date {
+  font-family: var(--pixel-font) !important;
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
+.cert-stamp {
+  border: 3px solid #dc2626;
+  color: #dc2626;
+  font-weight: 900;
+  font-size: 0.78rem;
+  padding: 4px 8px;
+  background: #fee2e2;
+  transform: rotate(-6deg);
+}
+
+/* =========================================
+   6. THẺ QUẺ BÓI RETRO OMIKUJI
+========================================= */
+.fortune-box {
+  text-align: center;
+}
+
+.fortune-title {
+  font-family: var(--pixel-font) !important;
+  font-size: 1.05rem;
+  color: #be123c;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.fortune-interactive-card {
+  background: #fff1f2;
+  border: 4px solid var(--pixel-border-color);
+  box-shadow: 4px 4px 0 #000000;
+  padding: 20px 16px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.fortune-interactive-card:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.fortune-icon-spin {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+.fortune-res-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #9f1239;
+  margin-bottom: 6px;
+}
+
+.fortune-res-text {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #4c0519;
+}
+
+.fortune-hint-click {
+  font-size: 0.78rem;
+  color: #881337;
+  font-weight: 700;
+}
+
+/* =========================================
+   CHAOS OVERLAY
+========================================= */
+#chaos-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(254, 240, 138, 0.25),
+    rgba(254, 240, 138, 0.25) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  opacity: 0;
+  transition: opacity 0.2s steps(2);
+}
+
+#chaos-overlay.active {
+  opacity: 1;
+}
+
+/* =========================================
+   7. SỔ TAY TÍNH NĂNG & NÚT HƯỚNG DẪN HEADER
+========================================= */
+.btn-guide {
+  background: #fef08a !important;
+  border-color: var(--pixel-border-color) !important;
+  animation: guidePulse 2.5s infinite alternate ease-in-out;
+}
+.btn-guide:hover {
+  background: #fde047 !important;
+}
+@keyframes guidePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); background: #fef08a; }
+  100% { transform: scale(1); }
+}
+
+.modal-guide-box {
+  max-width: 500px;
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 14px;
+  background: #fffdfa;
+  box-sizing: border-box;
+}
+
+.guide-header {
+  text-align: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 3px dashed #cbd5e1;
+}
+
+.guide-book-icon {
+  font-size: 1.8rem;
+  margin-bottom: 2px;
+  animation: bookBounce 2s infinite alternate ease-in-out;
+}
+@keyframes bookBounce {
+  0% { transform: translateY(0) rotate(-4deg); }
+  100% { transform: translateY(-5px) rotate(4deg); }
+}
+
+.guide-main-title {
+  font-family: var(--pixel-font) !important;
+  font-size: 1.15rem;
+  color: #be123c;
+  margin: 4px 0 6px;
+  line-height: 1.45;
+  letter-spacing: -0.5px;
+}
+
+.guide-subtitle {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.guide-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.guide-card {
+  background: #ffffff;
+  border: 2.5px solid var(--pixel-border-color);
+  box-shadow: 3px 3px 0 #000000;
+  padding: 10px 12px;
+  transition: transform 0.1s ease;
+}
+
+.card-pink { border-left: 6px solid #f472b6; }
+.card-blue { border-left: 6px solid #38bdf8; }
+.card-yellow { border-left: 6px solid #facc15; }
+.card-green { border-left: 6px solid #4ade80; }
+.card-purple { border-left: 6px solid #c084fc; }
+
+.guide-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.guide-badge {
+  display: inline-block;
+  background: #2b201e;
+  color: #ffffff;
+  font-family: var(--pixel-font) !important;
+  font-size: 0.72rem;
+  padding: 2px 5px;
+}
+
+.guide-card-title {
+  font-family: var(--pixel-font) !important;
+  font-size: 1rem;
+  font-weight: 900;
+  margin: 0;
+  color: #1e1b4b;
+}
+
+.guide-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.guide-list li {
+  margin-bottom: 5px;
+}
+
+.guide-list li:last-child {
+  margin-bottom: 0;
+}
+
+.guide-list strong {
+  color: #0f172a;
+}
+
+.guide-sublist {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  padding: 5px 8px;
+  margin-top: 5px;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.guide-footer {
+  margin-top: 6px;
+  text-align: center;
+}
+
+.btn-close-guide-act {
+  background: #ffd3e2;
+  border-color: var(--pixel-border-color);
+  color: #be123c;
+  font-weight: 900;
+  font-size: 0.76rem;
+  padding: 10px;
+  cursor: pointer;
+  letter-spacing: -0.5px;
+  box-shadow: 3px 3px 0 #000000;
+}
+.btn-close-guide-act:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000000;
+}
+
+/* Custom scrollbar cho sổ tay */
+.modal-guide-box::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-guide-box::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.modal-guide-box::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border: 1px solid var(--pixel-border-color);
+}
+
+body.night-theme .modal-guide-box,
+body.weather-night .modal-guide-box {
+  background: #0f172a;
+  color: #f8fafc;
+}
+body.night-theme .guide-card,
+body.weather-night .guide-card {
+  background: #1e293b;
+  border-color: #475569;
+  box-shadow: 3px 3px 0 #000;
+}
+body.night-theme .guide-card-title,
+body.weather-night .guide-card-title {
+  color: #f472b6;
+}
+body.night-theme .guide-list,
+body.weather-night .guide-list {
+  color: #cbd5e1;
+}
+body.night-theme .guide-list strong,
+body.weather-night .guide-list strong {
+  color: #f8fafc;
+}
+body.night-theme .guide-sublist,
+body.weather-night .guide-sublist {
+  background: #0f172a;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+/* =========================================
+   RESPONSIVE CHO ĐIỆN THOẠI (SMARTPHONE UI)
+========================================= */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 4px 6px 2px;
+    gap: 3px;
+    max-width: 100%;
+  }
+
+  .hud-top-row {
+    gap: 4px;
+  }
+
+  .hud-brand-box {
+    padding: 2px 5px;
+    max-width: 170px;
+    border-width: 2.5px;
+  }
+
+  .hud-heart {
+    font-size: 0.85rem;
+  }
+
+  .couple-names {
+    font-size: 0.82rem;
+    max-width: 105px;
+  }
+
+  .hud-day-counter {
+    font-size: 0.68rem;
+  }
+
+  .counter-number {
+    font-size: 0.78rem;
+  }
+
+  .coin-display {
+    padding: 3px 5px;
+    font-size: 0.76rem;
+    border-width: 2.5px;
+  }
+
+  .coin-icon {
+    font-size: 0.75rem;
+  }
+
+  .top-controls {
+    gap: 3px;
+  }
+
+  .btn-icon {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 0.85rem;
+    border-width: 2.5px;
+  }
+
+  .hud-meters-row {
+    padding: 2px 6px;
+    border-width: 2.5px;
+    gap: 4px;
+  }
+
+  .stat-pill {
+    gap: 2px;
+  }
+
+  .stat-icon {
+    font-size: 0.72rem;
+  }
+
+  .stat-bar-track {
+    width: 36px;
+    height: 8px;
+    border-width: 1.5px;
+  }
+
+  .hud-time-detail {
+    font-size: 0.65rem;
+  }
+
+  .main-stage {
+    padding: 2px 4px 4px;
+    width: 100%;
+  }
+
+  .characters-row {
+    gap: 4px;
+    width: 100%;
+  }
+
+  .character-slot {
+    max-width: 32vw;
+  }
+
+  .pixel-sprite {
+    width: clamp(86px, 28vw, 130px);
+    height: clamp(86px, 28vw, 130px);
+  }
+
+  .pixel-shadow {
+    width: clamp(55px, 18vw, 85px);
+    height: 8px;
+    margin-top: -6px;
+  }
+
+  .pixel-name-tag {
+    font-size: 0.74rem;
+    padding: 2px 4px;
+    margin-top: 4px;
+  }
+
+  .speech-bubble {
+    font-size: 0.78rem;
+    max-width: 125px;
+    top: -60px;
+    padding: 4px 6px;
+  }
+
+  /* Console Dock trên Mobile */
+  .console-dock-container {
+    padding: 4px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .dock-tabs {
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+
+  .dock-tab {
+    font-size: 0.82rem;
+    padding: 3px 4px;
+  }
+
+  .console-btn {
+    font-size: 0.78rem;
+    padding: 4px 4px;
+    gap: 3px;
+  }
+
+  .console-btn .icon {
+    font-size: 0.88rem;
+  }
+
+  .inventory-bar {
+    padding: 3px;
+    gap: 4px;
+  }
+
+  .food-img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .food-name {
+    font-size: 0.72rem;
+  }
+
+  /* Tối ưu Modal trên Mobile không bị tràn */
+  .modal-overlay {
+    padding: 8px;
+  }
+
+  .modal-content {
+    max-height: 88dvh;
+    overflow-y: auto;
+    padding: 16px 12px;
+    margin: 4px;
+    border-width: 4px;
+    box-shadow: 4px 4px 0 #000000;
+  }
+
+  .btn-close-modal {
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+
+  .game-title {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    padding-right: 28px;
+  }
+
+  .game-stats-row {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+    margin-bottom: 6px;
+  }
+
+  .catcher-arena {
+    height: 180px;
+  }
+
+  .monster-holes-grid {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .monster-hole {
+    height: 58px;
+  }
+
+  .monster-sprite-pop {
+    width: 46px;
+    height: 46px;
+  }
+
+  .game-field-arena {
+    height: 170px;
+  }
+
+  .pixel-house {
+    left: 2px;
+    transform: scale(0.55);
+    transform-origin: bottom left;
+    bottom: -15px;
+  }
+
+  .pixel-signpost {
+    right: 2px;
+    transform: scale(0.55);
+    transform-origin: bottom right;
+    bottom: -15px;
+  }
+}

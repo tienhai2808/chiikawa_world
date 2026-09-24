@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Chiikawa Pixel World 👾 Khu Vui Chơi & Khám Phá Thảo Nguyên Chiikawa</title>
+
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="theme-color" content="#ffd3e2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Favicon Pixel -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👾</text></svg>">
+
+  <!-- Retro Pixel Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Canvas hạt Pixel 8-Bit (Cánh hoa, tim, sao, nước mắt) -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Lớp phủ hiệu ứng Usagi Berserk Mode -->
+  <div id="chaos-overlay"></div>
+
+  <!-- DÂY CỜ DÃ NGOẠI PASTEL TAM GIÁC PIXEL (DƯỚI HEADER) -->
+  <div class="camp-bunting" aria-hidden="true">
+    <div class="bunting-line"></div>
+    <div class="bunting-flags">
+      <div class="b-flag flag-pink"></div>
+      <div class="b-flag flag-yellow"></div>
+      <div class="b-flag flag-blue"></div>
+      <div class="b-flag flag-mint"></div>
+      <div class="b-flag flag-peach"></div>
+      <div class="b-flag flag-lavender"></div>
+      <div class="b-flag flag-pink"></div>
+      <div class="b-flag flag-yellow"></div>
+      <div class="b-flag flag-blue"></div>
+      <div class="b-flag flag-mint"></div>
+    </div>
+  </div>
+
+  <!-- CẦU VỒNG PIXEL 8-BIT (TRỜI NẮNG) -->
+  <div class="pixel-rainbow" id="pixel-rainbow" aria-hidden="true">
+    <svg viewBox="0 0 240 100" class="rainbow-svg" shape-rendering="crisp-edges">
+      <path d="M 20 100 A 100 80 0 0 1 220 100" fill="none" stroke="#ff4d6d" stroke-width="7" stroke-dasharray="8 2"/>
+      <path d="M 26 100 A 94 74 0 0 1 214 100" fill="none" stroke="#fb923c" stroke-width="7" stroke-dasharray="8 2"/>
+      <path d="M 32 100 A 88 68 0 0 1 208 100" fill="none" stroke="#facc15" stroke-width="7" stroke-dasharray="8 2"/>
+      <path d="M 38 100 A 82 62 0 0 1 202 100" fill="none" stroke="#4ade80" stroke-width="7" stroke-dasharray="8 2"/>
+      <path d="M 44 100 A 76 56 0 0 1 196 100" fill="none" stroke="#38bdf8" stroke-width="7" stroke-dasharray="8 2"/>
+      <path d="M 50 100 A 70 50 0 0 1 190 100" fill="none" stroke="#c084fc" stroke-width="7" stroke-dasharray="8 2"/>
+    </svg>
+  </div>
+
+  <!-- BẦU TRỜI MÂY PIXEL FLUFFY VỚI MẶT CƯỜI ĐÁNG YÊU & THỜI TIẾT -->
+  <div class="pixel-clouds">
+    <!-- Mặt trời / Mặt trăng tương tác (Mặt trời hình tròn tỏa tia nắng rực rỡ) -->
+    <div class="pixel-celestial" id="celestial-body" title="Chạm để đổi thời tiết (Nắng/Mưa/Gió hoa/Đêm)">
+      <div class="sun-element">
+        <!-- Vòng 8 tia nắng nhọn quay tròn rực rỡ -->
+        <svg class="sun-rays-svg" viewBox="0 0 60 60" width="54" height="54" shape-rendering="crisp-edges">
+          <!-- 4 tia chính (trên, dưới, trái, phải) -->
+          <polygon points="30,2 34,13 26,13" fill="#f59e0b" stroke="#2b201e" stroke-width="2"/>
+          <polygon points="30,58 34,47 26,47" fill="#f59e0b" stroke="#2b201e" stroke-width="2"/>
+          <polygon points="2,30 13,34 13,26" fill="#f59e0b" stroke="#2b201e" stroke-width="2"/>
+          <polygon points="58,30 47,34 47,26" fill="#f59e0b" stroke="#2b201e" stroke-width="2"/>
+          <!-- 4 tia chéo (45 độ) -->
+          <polygon points="10,10 16,21 21,16" fill="#fbbf24" stroke="#2b201e" stroke-width="2"/>
+          <polygon points="50,50 44,39 39,44" fill="#fbbf24" stroke="#2b201e" stroke-width="2"/>
+          <polygon points="10,50 21,44 16,39" fill="#fbbf24" stroke="#2b201e" stroke-width="2"/>
+          <polygon points="50,10 39,16 44,21" fill="#fbbf24" stroke="#2b201e" stroke-width="2"/>
+        </svg>
+
+        <!-- Thân mặt trời hình TRÒN xoe đáng yêu với mắt tròn & má hồng -->
+        <div class="sun-face-circle">
+          <div class="sun-eye-dot eye-left"></div>
+          <div class="sun-mouth-smile"></div>
+          <div class="sun-eye-dot eye-right"></div>
+          <div class="sun-blush blush-left"></div>
+          <div class="sun-blush blush-right"></div>
+        </div>
+      </div>
+      <div class="moon-element">
+        <div class="moon-core"></div>
+        <span class="moon-star">✦</span>
+      </div>
+    </div>
+
+    <!-- Mây Pixel 1: Mây Mẹ Bồng Bềnh Má Hồng (Tầng cao) -->
+    <div class="cloud-track track-1">
+      <div class="cloud-bob cloud-interactive" title="Chạm vào bé mây nè!">
+        <svg class="fluffy-cloud-svg" viewBox="0 0 140 60" width="140" height="60" shape-rendering="crisp-edges">
+          <!-- Thân mây nhiều tầng bậc pixel -->
+          <path class="cloud-body-path" d="M 24 50 H 116 V 46 H 124 V 38 H 132 V 26 H 128 V 20 H 118 V 14 H 104 V 8 H 86 V 4 H 54 V 8 H 40 V 14 H 26 V 20 H 16 V 30 H 10 V 42 H 18 V 46 H 24 Z" fill="#ffffff" stroke="#2b201e" stroke-width="3.5" stroke-linejoin="miter"/>
+          <!-- Đổ bóng pixel bên dưới -->
+          <path class="cloud-shadow-path" d="M 22 42 H 118 V 46 H 114 V 48 H 26 V 46 H 22 Z" fill="#cbd5e1"/>
+          <!-- Khuôn mặt Kawaii -->
+          <rect class="cloud-eye" x="54" y="24" width="4.5" height="4.5" fill="#2b201e"/>
+          <rect class="cloud-eye" x="78" y="24" width="4.5" height="4.5" fill="#2b201e"/>
+          <rect class="cloud-blush" x="45" y="30" width="7" height="4" fill="#ffb7b2"/>
+          <rect class="cloud-blush" x="84" y="30" width="7" height="4" fill="#ffb7b2"/>
+          <rect class="cloud-mouth" x="64" y="30" width="6" height="3" fill="#2b201e"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Mây Pixel 2: Mây Bố Trôi Chậm Rãi (Tầng giữa) -->
+    <div class="cloud-track track-2">
+      <div class="cloud-bob cloud-interactive" title="Chạm vào bé mây nè!">
+        <svg class="fluffy-cloud-svg" viewBox="0 0 160 64" width="160" height="64" shape-rendering="crisp-edges">
+          <path class="cloud-body-path" d="M 28 54 H 132 V 50 H 144 V 42 H 152 V 28 H 146 V 20 H 134 V 14 H 116 V 8 H 92 V 4 H 60 V 8 H 44 V 14 H 28 V 22 H 16 V 34 H 10 V 46 H 20 V 50 H 28 Z" fill="#ffffff" stroke="#2b201e" stroke-width="3.5" stroke-linejoin="miter"/>
+          <path class="cloud-shadow-path" d="M 24 46 H 136 V 50 H 130 V 52 H 30 V 50 H 24 Z" fill="#cbd5e1"/>
+          <!-- Mắt nhắm ngủ tít mắt -->
+          <path class="cloud-eye-closed" d="M 62 26 H 70 M 62 27 H 70" stroke="#2b201e" stroke-width="2.5"/>
+          <path class="cloud-eye-closed" d="M 88 26 H 96 M 88 27 H 96" stroke="#2b201e" stroke-width="2.5"/>
+          <rect class="cloud-blush" x="52" y="30" width="8" height="4" fill="#ffb7b2"/>
+          <rect class="cloud-blush" x="98" y="30" width="8" height="4" fill="#ffb7b2"/>
+          <rect class="cloud-mouth" x="77" y="30" width="6" height="3" fill="#2b201e"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Mây Pixel 3: Bé Mây Con Tinh Nghịch (Tầng thấp) -->
+    <div class="cloud-track track-3">
+      <div class="cloud-bob cloud-interactive" title="Chạm vào bé mây nè!">
+        <svg class="fluffy-cloud-svg" viewBox="0 0 95 45" width="95" height="45" shape-rendering="crisp-edges">
+          <path class="cloud-body-path" d="M 18 38 H 78 V 34 H 86 V 26 H 90 V 18 H 82 V 12 H 70 V 6 H 48 V 4 H 32 V 8 H 20 V 14 H 10 V 24 H 6 V 32 H 12 V 36 H 18 Z" fill="#ffffff" stroke="#2.5" stroke="#2b201e" stroke-width="3" stroke-linejoin="miter"/>
+          <path class="cloud-shadow-path" d="M 16 32 H 80 V 35 H 76 V 37 H 20 V 35 H 16 Z" fill="#cbd5e1"/>
+          <rect class="cloud-eye" x="38" y="18" width="3.5" height="3.5" fill="#2b201e"/>
+          <rect class="cloud-eye" x="54" y="18" width="3.5" height="3.5" fill="#2b201e"/>
+          <rect class="cloud-blush" x="30" y="22" width="5" height="3" fill="#ffb7b2"/>
+          <rect class="cloud-blush" x="60" y="22" width="5" height="3" fill="#ffb7b2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- BÓNG BAY THƯ BÁO & NHẶT XU TRÔI Ở KHOẢNG GIỮA MÀN HÌNH -->
+  <div class="lucky-balloon-track" id="balloon-track">
+    <div class="lucky-balloon" id="lucky-balloon" title="Chạm để mở thư bí mật & nhận Xu!">
+      <div class="balloon-tag">💌 Chạm em nè!</div>
+      <svg class="balloon-svg" viewBox="0 0 46 56" width="46" height="56" shape-rendering="crisp-edges">
+        <!-- Khí cầu trái tim Pixel đỏ hồng -->
+        <path d="M 8 10 H 20 V 4 H 28 V 10 H 40 V 22 H 36 V 28 H 30 V 34 H 26 V 38 H 22 V 38 H 18 V 34 H 12 V 28 H 8 V 22 H 4 V 14 H 8 Z" fill="#ff4d6d" stroke="#2b201e" stroke-width="2.5"/>
+        <rect x="8" y="10" width="6" height="6" fill="#ffffff"/>
+        <rect x="21" y="38" width="6" height="4" fill="#ff758f"/>
+        <!-- Dây nối pixel -->
+        <line x1="24" y1="42" x2="24" y2="47" stroke="#2b201e" stroke-width="2"/>
+        <!-- Bức thư tình màu vàng kem -->
+        <rect x="16" y="47" width="16" height="9" fill="#fef08a" stroke="#2b201e" stroke-width="2"/>
+        <polygon points="16,47 24,52 32,47" fill="#facc15" stroke="#2b201e" stroke-width="1.5"/>
+        <circle cx="24" cy="51" r="1.5" fill="#ef4444"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- DÃY ĐỒI XANH XA XÔI & CỐI XAY GIÓ (TẠO ĐỘ SÂU CHIỀU KHÔNG GIAN) -->
+  <div class="distant-hills" aria-hidden="true">
+    <div class="hills-back"></div>
+    <div class="hills-mid">
+      <div class="pixel-mini-tree tr-1"></div>
+      <div class="pixel-mini-tree tr-2"></div>
+      <div class="pixel-mini-tree tr-3"></div>
+      <div class="pixel-mini-windmill">
+        <div class="wm-body"></div>
+        <div class="wm-blades">
+          <div class="wm-blade b-h"></div>
+          <div class="wm-blade b-v"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phong cảnh thiên nhiên Pixel (Nhà nấm, hàng rào, biển chỉ dẫn) -->
+  <div class="scenery-layer">
+    <!-- Căn nhà nấm ấm cúng của Chiikawa ở góc xa -->
+    <div class="pixel-house" title="Ngôi nhà nhỏ của Chiikawa">
+      <div class="roof"></div>
+      <div class="walls">
+        <div class="door"></div>
+        <div class="window"></div>
+      </div>
+    </div>
+
+    <!-- Biển chỉ dẫn các khu vui chơi -->
+    <div class="pixel-signpost">
+      <div class="sign-board">🌱 BÃI CỎ</div>
+      <div class="sign-board">⚔️ THẢO PHẠT</div>
+      <div class="sign-pole"></div>
+    </div>
+  </div>
+
+  <!-- Thảm cỏ xanh Pixel Art phong cách Game Boy -->
+  <div class="pixel-ground">
+    <div class="pixel-ground-dots"></div>
+    <!-- Thảm dã ngoại hoa quả ở giữa sân khấu -->
+    <div class="picnic-mat"></div>
+    <!-- Các cụm hoa dại pixel điểm xuyết trên cỏ -->
+    <div class="pixel-flower fl-1"></div>
+    <div class="pixel-flower fl-2"></div>
+    <div class="pixel-flower fl-3"></div>
+    <div class="pixel-flower fl-4"></div>
+  </div>
+
+  <!-- HEADER: MOBILE-FIRST COMPACT HUD (CHUẨN ĐIỆN THOẠI) -->
+  <header class="app-header">
+    <div class="hud-top-row">
+      <!-- Tiêu đề thương hiệu & Đếm ngày -->
+      <div class="hud-brand-box">
+        <span class="hud-heart">🌱</span>
+        <div class="hud-couple-info">
+          <div class="couple-names" id="couple-names">Thế Giới Chiikawa</div>
+          <div class="hud-day-counter">
+            <span class="counter-number" id="love-counter-days">0</span> NGÀY KHÁM PHÁ
+          </div>
+        </div>
+      </div>
+
+      <!-- Số Xu kiếm được -->
+      <div class="coin-display" title="Xu thù lao kiếm được">
+        <span class="coin-icon">🪙</span>
+        <span class="coin-val" id="val-coins">15</span>
+      </div>
+
+      <!-- 4 Nút icon điều khiển gọn gàng -->
+      <div class="top-controls">
+        <button id="btn-guide-modal" class="btn-icon btn-guide" title="Sổ tay tính năng & Hướng dẫn chơi">📖</button>
+        <button id="btn-toggle-daynight" class="btn-icon" title="Đổi thời tiết (Nắng / Mưa / Gió hoa / Đêm)">☀️</button>
+        <button id="btn-jukebox-next" class="btn-icon" title="Đổi bài nhạc Jukebox">📻</button>
+        <button id="btn-bgm-toggle" class="btn-icon" title="Bật/Tắt âm thanh">🎵</button>
+      </div>
+    </div>
+
+    <!-- Thanh 3 chỉ số Tamagotchi siêu mỏng -->
+    <div class="hud-meters-row">
+      <div class="stat-pill" title="Hạnh phúc">
+        <span class="stat-icon">❤️</span>
+        <div class="stat-bar-track">
+          <div class="stat-bar-fill bar-red" id="bar-love"></div>
+        </div>
+      </div>
+      <div class="stat-pill" title="No bụng">
+        <span class="stat-icon">🍙</span>
+        <div class="stat-bar-track">
+          <div class="stat-bar-fill bar-yellow" id="bar-hunger"></div>
+        </div>
+      </div>
+      <div class="stat-pill" title="Năng lượng">
+        <span class="stat-icon">⚡</span>
+        <div class="stat-bar-track">
+          <div class="stat-bar-fill bar-blue" id="bar-energy"></div>
+        </div>
+      </div>
+      <div class="hud-time-detail" id="love-counter-detail">0H 0M 0S</div>
+    </div>
+  </header>
+
+  <!-- SÂN KHẤU CHÍNH: 3 SPRITE PIXEL ART (CHIIKAWA, HACHIWARE, USAGI) -->
+  <main class="main-stage">
+    <div class="characters-row">
+      <!-- 1. Chiikawa Slot -->
+      <div class="character-slot">
+        <div class="speech-bubble" id="bubble-chiikawa">...</div>
+        <div id="char-chiikawa" title="Chạm để bóp má Chiikawa nè!">
+          <!-- Sprite injected by characters.js -->
+        </div>
+        <div class="pixel-name-tag">🤍 CHIIKAWA</div>
+      </div>
+
+      <!-- 2. Hachiware Slot -->
+      <div class="character-slot">
+        <div class="speech-bubble" id="bubble-hachiware">...</div>
+        <div id="char-hachiware" title="Chạm để chào Hachiware nè!">
+          <!-- Sprite injected by characters.js -->
+        </div>
+        <div class="pixel-name-tag">💙 HACHIWARE</div>
+      </div>
+
+      <!-- 3. Usagi Slot -->
+      <div class="character-slot">
+        <div class="speech-bubble" id="bubble-usagi">...</div>
+        <div id="char-usagi" title="Chạm để xem Usagi quẩy tưng bừng!">
+          <!-- Sprite injected by characters.js -->
+        </div>
+        <div class="pixel-name-tag">💛 USAGI</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================
+       RETRO BOTTOM DOCK: TABS & ACTION CENTER (RESPONSIVE CHUẨN)
+  ========================================= -->
+  <section class="console-dock-container">
+    <!-- Thanh chọn Tab -->
+    <div class="dock-tabs">
+      <button class="dock-tab active" data-tab="tab-food">🍱 ĂN UỐNG (8)</button>
+      <button class="dock-tab" data-tab="tab-games">🎮 MINI-GAMES (3)</button>
+      <button class="dock-tab" data-tab="tab-activities">💖 HOẠT ĐỘNG</button>
+    </div>
+
+    <!-- Tab 1: Ăn uống (8 Món Pixel) -->
+    <div class="dock-panel active" id="tab-food">
+      <div class="inventory-bar">
+        <div class="food-item" data-food="pudding" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_pudding.png" class="food-img" alt="Pudding">
+          <span class="food-name">Pudding</span>
+        </div>
+        <div class="food-item" data-food="onigiri" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_onigiri.png" class="food-img" alt="Cơm nắm">
+          <span class="food-name">Cơm nắm</span>
+        </div>
+        <div class="food-item" data-food="ramen" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_ramen.png" class="food-img" alt="Mì Ro-">
+          <span class="food-name">Mì Ro-</span>
+        </div>
+        <div class="food-item" data-food="candy" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_candy.png" class="food-img" alt="Kẹo dâu">
+          <span class="food-name">Kẹo dâu</span>
+        </div>
+        <div class="food-item" data-food="melon" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_melon.png" class="food-img" alt="Melon Soda">
+          <span class="food-name">Melon Soda</span>
+        </div>
+        <div class="food-item" data-food="taiyaki" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_taiyaki.png" class="food-img" alt="Bánh cá">
+          <span class="food-name">Bánh cá</span>
+        </div>
+        <div class="food-item" data-food="dango" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_dango.png" class="food-img" alt="Dango">
+          <span class="food-name">Dango</span>
+        </div>
+        <div class="food-item" data-food="meat" title="Kéo thả vào bé để cho ăn">
+          <img src="assets/sprites/food_meat.png" class="food-img" alt="Thịt nướng">
+          <span class="food-name">Thịt nướng</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: 3 Mini-Games -->
+    <div class="dock-panel" id="tab-games">
+      <div class="games-nav-row">
+        <button class="console-btn btn-weeding" id="btn-game-weeding">
+          <span class="icon">🌱</span>
+          <span class="label">Kỳ Thi Nhổ Cỏ</span>
+        </button>
+        <button class="console-btn btn-monster" id="btn-game-monster">
+          <span class="icon">⚔️</span>
+          <span class="label">Thảo Phạt Quái</span>
+        </button>
+        <button class="console-btn btn-catcher" id="btn-game-catcher">
+          <span class="icon">🍰</span>
+          <span class="label">Hứng Bánh Rơi</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab 3: Hoạt động & Kỷ niệm -->
+    <div class="dock-panel" id="tab-activities">
+      <div class="activities-nav-row">
+        <button class="console-btn btn-gacha" id="btn-feature-gacha">
+          <span class="icon">🎰</span>
+          <span class="label">Gacha Bảo Bối</span>
+        </button>
+        <button class="console-btn btn-dance" id="btn-feature-dance">
+          <span class="icon">💃</span>
+          <span class="label">Nhảy Múa</span>
+        </button>
+        <button class="console-btn btn-camera" id="btn-feature-camera">
+          <span class="icon">📸</span>
+          <span class="label">Chụp Polaroid</span>
+        </button>
+        <button class="console-btn btn-cert" id="btn-certificate">
+          <span class="icon">📜</span>
+          <span class="label">Bằng Nhổ Cỏ</span>
+        </button>
+        <button class="console-btn btn-fortune" id="btn-fortune">
+          <span class="icon">💌</span>
+          <span class="label">Quẻ Omikuji</span>
+        </button>
+        <button class="console-btn btn-chaos" id="btn-chaos-mode">
+          <span class="icon">⚡</span>
+          <span class="label">Usagi Yaha</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       MODAL 1: KỲ THI NHỔ CỎ (WEEDING CHALLENGE)
+  ========================================= -->
+  <div class="modal-overlay" id="modal-weeding">
+    <div class="modal-content modal-game-box">
+      <button class="btn-close-modal" id="close-weeding">X</button>
+      <div class="game-header">
+        <h2 class="game-title">🌱 KỲ THI NHỔ CỎ (草むしり検定)</h2>
+        <div class="game-stats-row">
+          <div>THỜI GIAN: <span class="highlight-val" id="weeding-timer">25s</span></div>
+          <div>ĐIỂM: <span class="highlight-val" id="weeding-score">0</span></div>
+        </div>
+      </div>
+      <div class="game-field-arena" id="weeding-field"></div>
+      <div class="game-footer-bar">
+        <button class="btn-pixel btn-big" id="btn-start-weeding">BẮT ĐẦU THI NHỔ CỎ</button>
+        <div class="game-result-box" id="weeding-result" style="display:none;">
+          <h3 id="weeding-rank-text">CHỨNG NHẬN CẤP 1!</h3>
+          <p id="weeding-earned-coins">+10 XU THÙ LAO!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL: HỨNG BÁNH PUDDING (SKY TREAT CATCHER)
+  ========================================= -->
+  <div class="modal-overlay" id="modal-catcher">
+    <div class="modal-content modal-game-box">
+      <button class="btn-close-modal" id="close-catcher">X</button>
+      <div class="game-header">
+        <h2 class="game-title">🍰 HỨNG BÁNH PUDDING (CATCHER)</h2>
+        <div class="game-stats-row">
+          <div>THỜI GIAN: <span class="highlight-val" id="catcher-timer">25s</span></div>
+          <div>ĐIỂM: <span class="highlight-val" id="catcher-score">0</span></div>
+        </div>
+      </div>
+      <div class="catcher-arena" id="catcher-arena">
+        <div class="catcher-basket" id="catcher-basket">
+          <img src="assets/sprites/catcher_basket.png" alt="Basket" class="basket-img" draggable="false">
+        </div>
+      </div>
+      <div class="catcher-mobile-controls">
+        <button class="btn-pixel btn-arrow" id="btn-catcher-left">◀ TRÁI</button>
+        <span class="catcher-hint">Di chuột / Vuốt màn hình để hứng bánh!</span>
+        <button class="btn-pixel btn-arrow" id="btn-catcher-right">PHẢI ▶</button>
+      </div>
+      <div class="game-footer-bar">
+        <button class="btn-pixel btn-big" id="btn-start-catcher">BẮT ĐẦU HỨNG BÁNH</button>
+        <div class="game-result-box" id="catcher-result" style="display:none;">
+          <h3 id="catcher-rank-text">THẦN HỨNG BÁNH!</h3>
+          <p id="catcher-earned-coins">+12 XU THÙ LAO!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL 2: THẢO PHẠT QUÁI VẬT (MONSTER HUNT)
+  ========================================= -->
+  <div class="modal-overlay" id="modal-monster">
+    <div class="modal-content modal-game-box">
+      <button class="btn-close-modal" id="close-monster">X</button>
+      <div class="game-header">
+        <h2 class="game-title">⚔️ THẢO PHẠT QUÁI VẬT (討伐)</h2>
+        <div class="game-stats-row">
+          <div>THỜI GIAN: <span class="highlight-val" id="monster-timer">25s</span></div>
+          <div>ĐIỂM: <span class="highlight-val" id="monster-score">0</span></div>
+        </div>
+      </div>
+      <div class="monster-holes-grid">
+        <div class="monster-hole" data-idx="0"></div>
+        <div class="monster-hole" data-idx="1"></div>
+        <div class="monster-hole" data-idx="2"></div>
+        <div class="monster-hole" data-idx="3"></div>
+        <div class="monster-hole" data-idx="4"></div>
+        <div class="monster-hole" data-idx="5"></div>
+      </div>
+      <div class="game-footer-bar">
+        <button class="btn-pixel btn-big" id="btn-start-monster">BẮT ĐẦU THẢO PHẠT</button>
+        <div class="game-result-box" id="monster-result" style="display:none;">
+          <h3 id="monster-rank-text">CHIẾN BINH THẢO PHẠT!</h3>
+          <p id="monster-earned-coins">+15 XU THÙ LAO!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL 3: LUCKY LOVE GACHA (5 XU/LƯỢT)
+  ========================================= -->
+  <div class="modal-overlay" id="modal-gacha">
+    <div class="modal-content modal-gacha-box">
+      <button class="btn-close-modal" id="close-gacha">X</button>
+      <h2 class="game-title">🎰 MÁY QUAY GACHA BẢO BỐI</h2>
+      <p style="font-size:0.82rem; margin-bottom: 12px; color: #554443;">Chi 5 Xu thù lao để quay ra các Bảo Bối Quý Giá & Danh Hiệu Độc Quyền!</p>
+      
+      <div class="gacha-machine-dispenser">
+        <div class="gacha-capsule-display" id="gacha-capsule-anim">
+          <img src="assets/sprites/gacha_capsule.png" alt="Capsule" class="capsule-img">
+        </div>
+        <button class="btn-pixel btn-gacha-spin" id="btn-spin-gacha">QUAY GACHA (5 🪙)</button>
+      </div>
+
+      <!-- Thẻ quà tặng mở ra -->
+      <div class="gacha-reward-card" id="gacha-reward-card" style="display: none;">
+        <span class="gacha-rarity-badge" id="gacha-item-rarity">SSR</span>
+        <h3 class="reward-title" id="gacha-item-title">Bảo Bối Thảo Nguyên</h3>
+        <p class="reward-desc" id="gacha-item-desc">Mô tả phần thưởng</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL 4: POLAROID PHOTO BOOTH
+  ========================================= -->
+  <div class="modal-overlay" id="modal-camera">
+    <div class="modal-content modal-camera-box">
+      <button class="btn-close-modal" id="close-camera">X</button>
+      <h2 class="game-title">📸 ẢNH KỶ NIỆM POLAROID</h2>
+      
+      <div class="polaroid-frame" id="polaroid-card-box">
+        <div class="polaroid-photo-area">
+          <div class="polaroid-trio">
+            <img src="assets/sprites/chiikawa_happy.png" class="polaroid-char">
+            <img src="assets/sprites/hachiware_happy.png" class="polaroid-char">
+            <img src="assets/sprites/usagi_happy.png" class="polaroid-char">
+          </div>
+        </div>
+        <div class="polaroid-meta">
+          <div class="polaroid-title" id="polaroid-caption">Chiikawa & Những Người Bạn ✨</div>
+          <div class="polaroid-date" id="polaroid-date">25/09/2026 🌟 Nantoka Nare!</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; text-align: center;">
+        <button class="btn-pixel btn-big" id="btn-download-polaroid">💾 LƯU ẢNH VỀ MÁY</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL 5: BẰNG CHỨNG NHẬN 16-BIT RETRO RPG
+  ========================================= -->
+  <div class="modal-overlay" id="modal-certificate">
+    <div class="modal-content">
+      <button class="btn-close-modal" id="close-certificate">X</button>
+      <div class="certificate-card">
+        <div class="cert-emblem">💮</div>
+        <h2 class="cert-title" id="cert-title">GIẤY CHỨNG NHẬN DŨNG SĨ</h2>
+        <div class="cert-subtitle" id="cert-subtitle">Hiệp Hội Thám Hiểm Chiikawa (草むしり検定)</div>
+
+        <div class="cert-girl-box">
+          <div style="font-size: 0.72rem; color: #78350f; font-weight: 700;">TRAO TẶNG CHO:</div>
+          <div class="cert-name" id="cert-name">Nhà Thám Hiểm Chiikawa</div>
+        </div>
+
+        <div class="cert-rank" id="cert-rank">CẤP ĐỘ 1 (CHỨNG CHỈ XUẤT SẮC)</div>
+        <p class="cert-official-text" id="cert-text">
+          Chứng nhận cấp cho cá nhân đã hoàn thành xuất sắc các khóa huấn luyện: Chăm chỉ lao động nhổ sạch cỏ dại, dũng cảm đối đầu thảo phạt quái vật, luôn lạc quan kiên cường và hết lòng bảo vệ bạn bè trên thảo nguyên Chiikawa.
+        </p>
+
+        <div class="cert-footer">
+          <div class="cert-date" id="cert-date">NGÀY CẤP: 25/09/2026</div>
+          <div class="cert-stamp" id="cert-stamp-text">HIỆP HỘI CHIIKAWA ĐÃ CẤP 💮</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL 6: HỘP THƯ / QUẺ BÓI RETRO OMIKUJI
+  ========================================= -->
+  <div class="modal-overlay" id="modal-fortune">
+    <div class="modal-content">
+      <button class="btn-close-modal" id="close-fortune">X</button>
+      <div class="fortune-box">
+        <h2 class="fortune-title">💌 QUẺ MAY MẮN OMIKUJI</h2>
+        <div class="fortune-interactive-card" id="fortune-card">
+          <div class="fortune-icon-spin">🔮</div>
+          <h3 class="fortune-res-title" id="fortune-result-title">Đại Cát May Mắn 🌟</h3>
+          <p class="fortune-res-text" id="fortune-result-text">
+            Hôm nay bạn sẽ nhặt được hạt dẻ khổng lồ và nhận được vô số niềm vui!
+          </p>
+        </div>
+        <div class="fortune-hint-click">✨ Chạm vào thẻ bài để bốc quẻ mới nhé! ✨</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL 7: SỔ TAY TÍNH NĂNG & HƯỚNG DẪN CHƠI CHI-KA-WA
+  ========================================= -->
+  <div class="modal-overlay" id="modal-guide">
+    <div class="modal-content modal-guide-box">
+      <button class="btn-close-modal" id="close-guide">X</button>
+      
+      <div class="guide-header">
+        <div class="guide-book-icon">📖</div>
+        <h2 class="guide-main-title">SỔ TAY KHÁM PHÁ CHI-KA-WA</h2>
+        <p class="guide-subtitle">Bí kíp trọn bộ trải nghiệm và phiêu lưu tại Thế Giới Chiikawa ✨</p>
+      </div>
+
+      <div class="guide-body">
+        <!-- 1. Chăm sóc 3 bé -->
+        <div class="guide-card card-pink">
+          <div class="guide-card-head">
+            <span class="guide-badge">01</span>
+            <h3 class="guide-card-title">🤍💙💛 Chăm Sóc 3 Bé Chiikawa</h3>
+          </div>
+          <ul class="guide-list">
+            <li><strong>Chạm & bóp má:</strong> Chạm trực tiếp vào từng bé để nghe tiếng kêu chíp chíp, ngắm biểu cảm cười tít mắt hoặc khóc mếu đáng yêu.</li>
+            <li><strong>Lời thoại ngộ nghĩnh:</strong> Mỗi lần chạm, các bé sẽ cất tiếng chào, gửi gắm lời động viên và câu thoại ngộ nghĩnh đặc trưng từ thế giới Chiikawa.</li>
+            <li><strong>Cho ăn 8 món ngon:</strong> Vào Tab 🍱 ĂN UỐNG, kéo thả Pudding, Cơm nắm, Mì Ro-, Kẹo dâu, Melon soda, Bánh cá, Dango hoặc Thịt nướng vào miệng các bé để hồi phục thanh No bụng 🍙 & Hạnh phúc ❤️.</li>
+            <li><strong>Berserk Usagi:</strong> Bấm nút ⚡ USAGI QUẨY ở góc trên để xem Usagi quẩy tưng bừng xoay tít thò lò và bắn sao ngập trời!</li>
+          </ul>
+        </div>
+
+        <!-- 2. Bầu trời & Thời tiết -->
+        <div class="guide-card card-blue">
+          <div class="guide-card-head">
+            <span class="guide-badge">02</span>
+            <h3 class="guide-card-title">☀️🌧️🌸🌙 Bầu Trời & Thời Tiết 4 Mùa</h3>
+          </div>
+          <ul class="guide-list">
+            <li><strong>Đổi thời tiết:</strong> Bấm nút thời tiết trên Header (☀️) hoặc chạm thẳng vào <strong>Mặt Trời / Mặt Trăng</strong> để chuyển luân phiên 4 mùa:
+              <div class="guide-sublist">
+                <div>☀️ <strong>Nắng Ấm:</strong> Cầu vồng 8-bit rực rỡ, mặt trời tròn xoe tỏa tia nắng xoay tròn và bong bóng 7 màu lơ lửng.</div>
+                <div>🌧️ <strong>Mưa Rào:</strong> Giọt mưa rơi xiên xiên theo gió, bọt nước bắn tóe tí tách trên thảm cỏ dã ngoại.</div>
+                <div>🌸 <strong>Gió Hoa:</strong> Cánh hoa anh đào & lá cỏ bay dập dờn theo từng luồng gió xuân mát rượi.</div>
+                <div>🌙 <strong>Đêm Sao:</strong> Bầu trời đêm huyền ảo, đom đóm phát sáng lập lòe giữa trời và sao băng vụt qua.</div>
+              </div>
+            </li>
+            <li><strong>Tương tác bầu trời:</strong> Chạm vào các <strong>đám mây</strong> để bóp mây mềm; chạm vào khoảng trống bầu trời để bung tỏa bụi sao 8-bit lấp lánh!</li>
+          </ul>
+        </div>
+
+        <!-- 3. Khí cầu thư báo -->
+        <div class="guide-card card-yellow">
+          <div class="guide-card-head">
+            <span class="guide-badge">03</span>
+            <h3 class="guide-card-title">💌 Khí Cầu Thư Báo & Nhặt Xu</h3>
+          </div>
+          <ul class="guide-list">
+            <li>Quan sát khoảng giữa màn hình, bạn sẽ thấy một quả <strong>bóng bay trái tim kèm phong thư</strong> từ từ bay qua với nhãn <code>💌 Chạm em nè!</code>.</li>
+            <li><strong>Chạm ngay vào bóng bay:</strong> Bóng sẽ nổ tung với chùm tim & sao pháo hoa, tặng ngay <strong>+3 🪙 Xu thù lao</strong> và mở ra một <strong>bức thư bất ngờ</strong> từ các cư dân trên thảo nguyên gửi tặng bạn!</li>
+          </ul>
+        </div>
+
+        <!-- 4. 3 Mini-Games cày xu -->
+        <div class="guide-card card-green">
+          <div class="guide-card-head">
+            <span class="guide-badge">04</span>
+            <h3 class="guide-card-title">🎮 3 Mini-Games Kiếm Xu Thù Lao</h3>
+          </div>
+          <ul class="guide-list">
+            <li>🧺 <strong>Hứng Bánh Pudding (Tab Games):</strong> Điều khiển giỏ Chiikawa hứng bánh pudding & kẹo rơi xuống, né gai nhọn, ăn sao may mắn để tích thật nhiều Xu.</li>
+            <li>🌱 <strong>Kỳ Thi Nhổ Cỏ:</strong> Nhổ cỏ thường (+1đ), cỏ vàng quý hiếm (+3đ) và TUYỆT ĐỐI KHÔNG chạm vào cỏ gai nguy hiểm để đạt chứng nhận cấp 1!</li>
+            <li>⚔️ <strong>Thảo Phạt Quái Vật:</strong> Cầm gậy thảo phạt gõ thật nhanh vào quái vật để trừ gian diệt bạo giải cứu thế giới và nhận thưởng Xu.</li>
+          </ul>
+        </div>
+
+        <!-- 5. Hoạt động & Gacha -->
+        <div class="guide-card card-purple">
+          <div class="guide-card-head">
+            <span class="guide-badge">05</span>
+            <h3 class="guide-card-title">🎁 Gacha & Hoạt Động Thảo Nguyên</h3>
+          </div>
+          <ul class="guide-list">
+            <li>🎰 <strong>Gacha Bảo Bối (5 Xu/lần):</strong> Quay trúng các Bảo Bối Quý Giá & Danh Hiệu Độc Quyền: <em>Gậy Phép Thuật Huyền Thoại, Bằng Cỏ Cấp 1, Bát Mì Ro- Siêu To, Máy Ảnh Xanh Cổ Điển, Đàn Guitar Hachiware...</em></li>
+            <li>📸 <strong>Chụp Ảnh Polaroid:</strong> Lưu giữ ảnh chụp kỷ niệm tuyệt đẹp cùng bộ ba Chiikawa, Hachiware & Usagi để tải về máy.</li>
+            <li>📜 <strong>Bằng Chứng Nhận Dũng Sĩ:</strong> Giấy chứng nhận hoàn thành xuất sắc kỳ thi nhổ cỏ và thảo phạt quái vật có đóng dấu mộc danh dự.</li>
+            <li>💌 <strong>Quẻ Omikuji May Mắn:</strong> Bốc thẻ quẻ may mắn khám phá vận hội và lời chúc vui vẻ mỗi ngày.</li>
+            <li>🕺 <strong>Vũ Điệu Pajama:</strong> Bật chế độ cả 3 bé đồng loạt nhảy múa siêu cấp dễ thương!</li>
+            <li>📻 <strong>Jukebox:</strong> Đổi qua lại 3 giai điệu nhạc 8-bit retro du dương.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-footer">
+        <button class="btn-pixel btn-big btn-close-guide-act" id="btn-close-guide-foot">🌟 ĐÃ HIỂU HẾT RỒI, KHÁM PHÁ THÔI!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Engine Scripts -->
+  <script src="config.js"></script>
+  <script src="audio.js"></script>
+  <script src="particles.js"></script>
+  <script src="characters.js"></script>
+  <script src="games.js"></script>
+  <script src="interactions.js"></script>
+</body>
+</html>
